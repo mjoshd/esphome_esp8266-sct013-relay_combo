@@ -1,0 +1,66 @@
+esphomeyaml:
+  name: laundry_room_lights
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: !secret laundry_room_lights_ip
+    gateway: !secret wifi_gateway
+    subnet: !secret wifi_subnet
+    dns1: !secret wifi_dns1
+    dns2: !secret wifi_dns2
+
+## Enable logging
+logger:
+
+## Enable Home Assistant API
+api:
+  password: !secret esphome_api_password
+
+ota:
+  password: !secret esphome_ota_password
+
+## https://esphomelib.com/esphomeyaml/components/web_server.html
+# web_server:
+#   port: 80
+
+### https://esphomelib.com/esphomeyaml/devices/sonoff_basic.html
+### https://esphomelib.com/esphomeyaml/devices/sonoff.html#shelly-1
+## https://esphomelib.com/esphomeyaml/components/binary_sensor/gpio.html
+## latching switch  e.g. light switch, Heltec/HTTM capacitive button
+binary_sensor:
+  - platform: gpio
+    pin: GPIO5
+    # name: "Laundry room Lights Switch" # uncomment to expose to Home Assistant
+    id: external_switch
+    on_press:
+      - switch.toggle: relay_template
+    on_release:
+      - switch.toggle: relay_template
+
+switch:
+## https://esphomelib.com/esphomeyaml/components/switch/gpio.html#
+  - platform: gpio
+    pin: GPIO4
+    # name: "Laundry room Lights Relay" # uncomment to expose to Home Assistant
+    id: relay
+    icon: "mdi:ceiling-light"
+## https://esphomelib.com/esphomeyaml/components/switch/template.html
+## ties the binary_sensor & switch together for accurate state reporting regardless of interaction method
+  - platform: template
+    name: "Laundry room Lights"
+    id: relay_template
+    lambda: |-
+      if (id(relay).state) {
+        return true;
+      } else {
+        return false;
+      }
+    turn_on_action:
+      - switch.toggle: relay
+    turn_off_action:
+      - switch.toggle: relay
+    # optimistic: true # change the toggle switch in HA to individual on/off buttons
