@@ -1,2 +1,2 @@
 # Never publish secrets.yaml
-secrets.yaml
+/secrets.yaml
