@@ -1,54 +1,74 @@
+substitutions:
+  # https://esphome.io/guides/configuration-types.html#substitutions
+  device_name: sonoff_basic
+  friendly_name: Sonoff Basic
+  ip_address: !secret sonoff_basic_ip
+  
+  
 esphomeyaml:
-  name: sonoff_basic
+  name: ${device_name}
   platform: ESP8266
   board: esp01_1m
   board_flash_mode: dout
 
+
 wifi:
+  # https://esphome.io/components/wifi
+  hostname: ${device_name}
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   manual_ip:
-    static_ip: !secret sonoff_basic_ip
+    static_ip: ${ip_address}
     gateway: !secret wifi_gateway
     subnet: !secret wifi_subnet
     dns1: !secret wifi_dns1
     dns2: !secret wifi_dns2
 
-# Enable logging
-logger:
 
-# Enable Home Assistant API
+logger:
+  # https://esphome.io/components/logger
+
+
 api:
-  password: !secret esphome_api_password
+  # https://esphome.io/components/api
+  # password: !secret esphome_api_password
+
 
 ota:
+  # https://esphome.io/components/ota
   password: !secret esphome_ota_password
-  
-# https://esphomelib.com/esphomeyaml/components/web_server.html
+
+
 # web_server:
+#   # https://esphomelib.com/esphomeyaml/components/web_server.html
 #   port: 80
 
+
 # https://esphomelib.com/esphomeyaml/devices/sonoff_basic.html
-# https://esphomelib.com/esphomeyaml/components/binary_sensor/gpio.html
+
+
 binary_sensor:
   - platform: gpio
+    # https://esphomelib.com/esphomeyaml/components/binary_sensor/gpio.html
     pin:
       number: GPIO0
       mode: INPUT_PULLUP
       inverted: True
     id: button
-    # name: "Sonoff Basic Button" # uncomment to expose the button as a binary senor
+    # name: ${friendly_name} Button # uncomment to expose the button as a binary senor
     on_press:
       - switch.toggle: relay_template
+      
       
 switch:
   - platform: gpio
     pin: GPIO12
     id: relay
-  ## https://esphomelib.com/esphomeyaml/components/switch/template.html
-  ## tie the led & relay together & report status regarless of trigger method   
+    
+  # Tie the led & relay together to report status regarless of trigger method   
   - platform: template
-    name: "Sonoff Basic Relay"
+    # https://esphomelib.com/esphomeyaml/components/switch/template.html
+    name: ${friendly_name} Relay
     id: relay_template
     lambda: |-
       if (id(relay).state) {
@@ -66,19 +86,20 @@ switch:
     
 
 output:
-  ## https://esphomelib.com/esphomeyaml/components/output/esp8266_pwm.html
-  ## create a PWM pin to control
+# Create a PWM pin to control
   - platform: esp8266_pwm
+    # https://esphomelib.com/esphomeyaml/components/output/esp8266_pwm.html
     id: basic_green_led
     pin:
       number: GPIO13
       inverted: True
 
+
 light:
-  ## https://esphomelib.com/esphomeyaml/components/light/monochromatic.html
-  ## attach a monochrome light to the PWM pin
+  # Attach a monochrome light to the PWM pin
   - platform: monochromatic
-    # name: "Sonoff Basic Green LED" # uncomment to expose the led as a light with brightness control
+    # https://esphomelib.com/esphomeyaml/components/light/monochromatic.html
+    # name: ${friendly_name} LED # uncomment to expose the led as a light with brightness control
     output: basic_green_led
     id: status_led
-    default_transition_length: 1ms # controls the light fade/transition time
+    default_transition_length: 1ms # controls the light fade/transition time (default 1000)
