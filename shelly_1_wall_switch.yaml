@@ -1,0 +1,87 @@
+substitutions:
+  # https://esphome.io/guides/configuration-types.html#substitutions
+  device_name: shelly_1_wall_switch
+  friendly_name: Shelly 1 Wall Switch
+  ip_address: !secret shelly_1_wall_switch_ip
+  icon: "mdi:ceiling-light"
+  
+
+esphomeyaml:
+  #https://esphome.io/components/esphomeyaml
+  name: ${device_name}
+  platform: ESP8266
+  board: esp_wroom_02   # 2MB Flash
+
+
+wifi:
+  # https://esphome.io/components/wifi
+  hostname: ${device_name}
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: ${ip_address}
+    gateway: !secret wifi_gateway
+    subnet: !secret wifi_subnet
+    dns1: !secret wifi_dns1
+    dns2: !secret wifi_dns2
+
+
+logger:
+  # https://esphome.io/components/logger
+
+
+api:
+  # https://esphome.io/components/api
+  # password: !secret esphome_api_password
+
+
+ota:
+  # https://esphome.io/components/ota
+  password: !secret esphome_ota_password
+
+
+# web_server:
+#   # https://esphomelib.com/esphomeyaml/components/web_server.html
+#   port: 80
+
+
+### https://esphomelib.com/esphomeyaml/devices/sonoff_basic.html
+### https://esphomelib.com/esphomeyaml/devices/sonoff.html#shelly-1
+
+
+binary_sensor:
+  - platform: gpio
+    # https://esphomelib.com/esphomeyaml/components/binary_sensor/gpio.html
+    pin: GPIO5
+    # name: ${friendly_name} Binary Sensor # uncomment to expose to Home Assistant
+    id: external_switch
+    ## latching switch  e.g. light switch, Heltec/HTTM capacitive button
+    on_press:
+      - switch.toggle: relay_template
+    on_release:
+      - switch.toggle: relay_template
+
+switch:
+  - platform: gpio
+    # https://esphomelib.com/esphomeyaml/components/switch/gpio.html
+    pin: GPIO4
+    # name: ${friendly_name} Relay # uncomment to expose to Home Assistant
+    id: relay
+    icon: ${icon}
+
+## tie the binary_sensor & switch together for accurate state reporting regardless of interaction method
+  - platform: template
+    # https://esphomelib.com/esphomeyaml/components/switch/template.html
+    name: ${friendly_name}
+    id: relay_template
+    lambda: |-
+      if (id(relay).state) {
+        return true;
+      } else {
+        return false;
+      }
+    turn_on_action:
+      - switch.toggle: relay
+    turn_off_action:
+      - switch.toggle: relay
+    # optimistic: true # change the toggle switch in HA to individual on/off buttons
