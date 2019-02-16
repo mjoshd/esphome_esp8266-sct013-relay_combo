@@ -1,4 +1,5 @@
 esphomeyaml:
+  # https://esphome.io/components/esphomeyaml
   name: ${device_name}
   platform: ${platform}
   board: ${board}
