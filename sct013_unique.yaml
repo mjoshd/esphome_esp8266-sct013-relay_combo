@@ -6,7 +6,7 @@
 
 
 substitutions:
-  # https://esphomelib.com/esphomeyaml/guides/configuration-types.html?highlight=variable#substitutions
+  # https://esphome.io/guides/configuration-types.html#substitutions
   device_name: sensor_relay_combo
   friendly_name: Sensor Relay Combo
   ip_address: !secret sensor_relay_combo_ip
