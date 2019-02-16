@@ -4,10 +4,12 @@ substitutions:
   friendly_name: D1Mini DHT22
   ip_address: !secret d1mini_dht22_ip
 
+
 esphomeyaml:
   name: ${device_name}
   platform: ESP8266
   board: nodemcuv2
+
 
 wifi:
   # https://esphome.io/components/wifi
@@ -20,6 +22,7 @@ wifi:
     subnet: !secret wifi_subnet
     dns1: !secret wifi_dns1
     dns2: !secret wifi_dns2
+
 
 logger:
   # https://esphome.io/components/logger
@@ -34,15 +37,17 @@ ota:
   # https://esphome.io/components/ota
   password: !secret esphome_ota_password
 
+
 # web_server:
 #   # https://esphomelib.com/esphomeyaml/components/web_server.html
 #   port: 80
 
+
 sensor:
+  # https://esphomelib.com/esphomeyaml/components/sensor
   - platform: dht
-    # https://esphomelib.com/esphomeyaml/components/sensor
     # https://esphomelib.com/esphomeyaml/components/sensor/dht.html
-    pin: D1 #GPIO5
+    pin: D1
     temperature:
       name: ${friendly_name} Temperature
       filters:
