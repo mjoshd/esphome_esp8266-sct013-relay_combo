@@ -7,7 +7,7 @@ substitutions:
   
 
 esphomeyaml:
-  #https://esphome.io/components/esphomeyaml
+  # https://esphome.io/components/esphomeyaml
   name: ${device_name}
   platform: ESP8266
   board: esp_wroom_02   # 2MB Flash
