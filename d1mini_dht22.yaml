@@ -6,6 +6,7 @@ substitutions:
 
 
 esphomeyaml:
+  # https://esphome.io/components/esphomeyaml
   name: ${device_name}
   platform: ESP8266
   board: nodemcuv2
