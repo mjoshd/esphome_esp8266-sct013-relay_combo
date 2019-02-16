@@ -1,39 +1,50 @@
+substitutions:
+  # https://esphome.io/guides/configuration-types.html#substitutions
+  device_name: d1mini_dht22
+  friendly_name: D1Mini DHT22
+  ip_address: !secret d1mini_dht22_ip
+
 esphomeyaml:
-  name: d1mini_dht22
+  name: ${device_name}
   platform: ESP8266
   board: nodemcuv2
 
 wifi:
+  # https://esphome.io/components/wifi
+  hostname: ${device_name}
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   manual_ip:
-    static_ip: !secret d1mini_dht22_ip
+    static_ip: ${ip_address}
     gateway: !secret wifi_gateway
     subnet: !secret wifi_subnet
     dns1: !secret wifi_dns1
     dns2: !secret wifi_dns2
 
-# Enable logging
 logger:
+  # https://esphome.io/components/logger
 
-# Enable Home Assistant API
+
 api:
-  password: !secret esphome_api_password
+  # https://esphome.io/components/api
+  # password: !secret esphome_api_password
+
 
 ota:
+  # https://esphome.io/components/ota
   password: !secret esphome_ota_password
-  
-## https://esphomelib.com/esphomeyaml/components/web_server.html
+
 # web_server:
+#   # https://esphomelib.com/esphomeyaml/components/web_server.html
 #   port: 80
 
-## https://esphomelib.com/esphomeyaml/components/sensor/dht.html
-## https://esphomelib.com/esphomeyaml/components/sensor/index.html#config-sensor
 sensor:
   - platform: dht
+    # https://esphomelib.com/esphomeyaml/components/sensor
+    # https://esphomelib.com/esphomeyaml/components/sensor/dht.html
     pin: D1 #GPIO5
     temperature:
-      name: "D1Mini DHT22 Temperature"
+      name: ${friendly_name} Temperature
       filters:
         - filter_nan:
         - heartbeat: 15s
@@ -46,7 +57,7 @@ sensor:
       # icon: "mdi:thermometer"   # temperature gets thermometer icon by default
       # accuracy_decimals: 1      # temperature gets 1 decimal by default
     humidity:
-      name: "D1Mini DHT22 Humidity"
+      name: ${friendly_name} Humidity
       filters:
         - filter_nan:
         - heartbeat: 15s
