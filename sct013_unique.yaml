@@ -1,7 +1,6 @@
 ##############################
-# Requirements:
-#       sct013.h            -> "PollingComponent" = sensor polling interval (500 - 1500 ms) 
-#       sct013_common.yaml  -> "update_interval" = interval to test polled values (5s or greater)
+# Requires:
+#       sct013.h              -> "PollingComponent" = sensor polling interval (recommend 500 - 1500 ms) 
 ##############################
 
 
@@ -10,10 +9,10 @@ substitutions:
   device_name: sensor_relay_combo
   friendly_name: Sensor Relay Combo
   ip_address: !secret sensor_relay_combo_ip
-  trigger_threshold: '20.0' # Varies per device/sensor. Check sensor value when device is in standby then set this number 10 or 20 higher; see "Analog Input Sensor Value" in the logs
+  trigger_threshold: '20.0' # Varies per device. Set this number 10 or 20 above device standby sensor value; see "Analog Input Sensor Value" in the logs
   platform: ESP8266
   board: d1_mini
-
+  update_interval: 5s   # interval to test polled values (recommend 5s or greater). Only required if incorporating a relay.
 
 wifi:
   # https://esphome.io/components/wifi
@@ -31,5 +30,6 @@ wifi:
 # web_server:
 #   # https://esphomelib.com/esphomeyaml/components/web_server.html
 #   port: 80
+
 
 <<: !include sct013_common.yaml
