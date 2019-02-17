@@ -41,6 +41,18 @@ sensor:
 binary_sensor:
   - platform: template
     # https://esphome.io/components/binary_sensor/template
+    name: ${friendly_name} Sensor Status
+    id: sensor_status
+    lambda: |-
+      if (id(sensor).state >= ${trigger_threshold}) {
+        return true;
+      } else {
+        return false;
+      }
+
+# this section only required if incorporating a relay----------#
+  - platform: template
+    # https://esphome.io/components/binary_sensor/template
     name: ${friendly_name} Relay Status
     id: relay_status
     lambda: |-
@@ -56,17 +68,6 @@ binary_sensor:
       then:
         - switch.turn_off: relay
 
-# this section only required if incorporating a relay----------#
-  - platform: template
-    # https://esphome.io/components/binary_sensor/template
-    name: ${friendly_name} Sensor Status
-    id: sensor_status
-    lambda: |-
-      if (id(sensor).state >= ${trigger_threshold}) {
-        return true;
-      } else {
-        return false;
-      }
 
 
 text_sensor:
