@@ -1,4 +1,8 @@
 ##############################
+# Info:
+#       Combines a D1-Mini, SCT-013, and relay.
+#       Use SCT-013 to sense power usage from a device and relay to control power to a secondary device.
+##############################
 # Requires:
 #       sct013.h          -> Place sct013.h in the same directory with this yaml file. "PollingComponent" = sensor polling interval (recommend 500 - 1500 ms) 
 ##############################
