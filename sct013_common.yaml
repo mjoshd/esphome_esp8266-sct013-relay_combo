@@ -32,28 +32,10 @@ sensor:
       return {my_sensor};
     sensors:
       name: ${friendly_name} Sensor Value  # Name is not respected in Home Assistant
-      id: sct013
+      id: sensor
       unit_of_measurement: W
-
-
-text_sensor:
-  - platform: template
-    # https://esphome.io/components/text_sensor/template.html
-    id: device_state
-    lambda: |-
-      if (id(sct013).state >= ${trigger_threshold}) {
-        return {"Running"};
-      } else {
-        return {"Standby"};
-      }
-    update_interval: 5s # give the sensor enough time to stabilize after the relay turns on/off
-
-
-switch:
-  - platform: gpio
-    # https://esphome.io/components/switch/gpio
-    pin: D1
-    id: relay
+      filters:
+        - delta: 2
 
 
 binary_sensor:
@@ -62,7 +44,7 @@ binary_sensor:
     name: ${friendly_name} Relay Status
     id: relay_status
     lambda: |-
-      if (id(device_state).state == "Running") {
+      if (id(device_state).state == "Active") {
         return true;
       } else {
         return false;
@@ -74,13 +56,35 @@ binary_sensor:
       then:
         - switch.turn_off: relay
 
+# this section only required if incorporating a relay----------#
   - platform: template
     # https://esphome.io/components/binary_sensor/template
     name: ${friendly_name} Sensor Status
     id: sensor_status
     lambda: |-
-      if (id(sct013).state >= ${trigger_threshold}) {
+      if (id(sensor).state >= ${trigger_threshold}) {
         return true;
       } else {
         return false;
       }
+
+
+text_sensor:
+  - platform: template
+    # https://esphome.io/components/text_sensor/template.html
+    id: device_state
+    lambda: |-
+      if (id(sensor).state >= ${trigger_threshold}) {
+        return {"Active"};
+      } else {
+        return {"Standby"};
+      }
+    update_interval: ${update_interval} # give the sensor enough time to stabilize from spike after the relay turns on/off
+
+
+switch:
+  - platform: gpio
+    # https://esphome.io/components/switch/gpio
+    pin: D1
+    id: relay
+#---------- this section only required if incorporating a relay #
