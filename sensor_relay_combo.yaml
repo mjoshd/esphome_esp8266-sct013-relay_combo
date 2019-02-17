@@ -1,6 +1,6 @@
 ##############################
 # Requires:
-#       sct013.h              -> "PollingComponent" = sensor polling interval (recommend 500 - 1500 ms) 
+#       sct013.h          -> Place sct013.h in the same directory with this yaml file. "PollingComponent" = sensor polling interval (recommend 500 - 1500 ms) 
 ##############################
 
 
