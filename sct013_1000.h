@@ -1,10 +1,10 @@
-#include "esphomelib.h"
+#include "esphome.h"
 
 #include "EmonLib.h"                   // Include Emon Library
 #define analogIn A0                    // Analog Input Pin
 #define calVal 111.1                   // Calibration Value
 
-using namespace esphomelib;
+using namespace esphome;
 
 class MyCustomSensor : public PollingComponent, public sensor::Sensor {
  public:
@@ -18,6 +18,7 @@ class MyCustomSensor : public PollingComponent, public sensor::Sensor {
     // This will be called by App.setup()
     // think of it as the setup() call in Arduino
     emon1.current(analogIn, calVal);          // Current: input pin, calibration value
+  
   }
 
   void update() override {
@@ -30,4 +31,5 @@ class MyCustomSensor : public PollingComponent, public sensor::Sensor {
     ESP_LOGD("Analog Input Sensor Value", "%f", watts);          // Send message to logging component
 
   }
+  
 };
