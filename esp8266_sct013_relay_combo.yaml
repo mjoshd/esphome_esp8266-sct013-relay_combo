@@ -20,7 +20,7 @@ substitutions:
 
 esphome:
   # https://esphome.io/components/esphome
-  name: $device_name
+  name: ${device_name}
   platform: ESP8266
   board: d1_mini
   includes:
@@ -34,7 +34,7 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   manual_ip:
-    static_ip: $ip_address
+    static_ip: ${ip_address}
     gateway: !secret wifi_gateway
     subnet: !secret wifi_subnet
     dns1: !secret wifi_dns1
@@ -67,30 +67,30 @@ sensor:
       App.register_component(my_sensor);
       return {my_sensor};
     sensors:
-      name: $friendly_name Sensor Value
+      name: ${friendly_name} Sensor Value
       id: sensor
       unit_of_measurement: W
       filters:
         - delta: 2
-    internal: True
+    # internal: True
 
 
 binary_sensor:
   - platform: template
     # https://esphome.io/components/binary_sensor/template
-    name: $friendly_name Sensor Status
+    name: ${friendly_name} Sensor Status
     id: sensor_status
     lambda: |-
-      if (id(sensor).state >= $trigger_threshold) {
+      if (id(sensor).state >= ${trigger_threshold}) {
         return true;
       } else {
         return false;
       }
 
-# this section only required if incorporating a relay----------#
+# this section only required if incorporating a relay ---------- #
   - platform: template
     # https://esphome.io/components/binary_sensor/template
-    name: $friendly_name Relay Status
+    name: ${friendly_name} Relay Status
     id: relay_status
     lambda: |-
       if (id(device_state).state == "Active") {
@@ -104,7 +104,7 @@ binary_sensor:
     on_release:
       then:
         - switch.turn_off: relay
-    internal: True
+    # internal: True
 
 
 text_sensor:
@@ -112,12 +112,12 @@ text_sensor:
     # https://esphome.io/components/text_sensor/template.html
     id: device_state
     lambda: |-
-      if (id(sensor).state >= $trigger_threshold) {
+      if (id(sensor).state >= ${trigger_threshold}) {
         return {"Active"};
       } else {
         return {"Standby"};
       }
-    update_interval: $update_interval   # give the sensor enough time to stabilize from spike after the relay turns on/off
+    update_interval: ${update_interval} # give the sensor enough time to stabilize from spike after the relay turns on/off
 
 
 switch:
