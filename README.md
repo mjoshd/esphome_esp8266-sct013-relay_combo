@@ -2,11 +2,11 @@
 
 Device links:
 
-[ESP8266 (Amazon)](https://www.amazon.com/gp/product/B010N1SPRK)
+[ESP8266 (Amazon)](https://www.amazon.com/gp/product/B010N1SPRK/ref=as_li_tl?ie=UTF8&tag=mjoshd-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B010N1SPRK&linkId=f890b5e304d28db9f32d87c2af4c3c99)
 
-[SCT013 (Amazon)](https://www.amazon.com/gp/product/B01FBMFZCO)
+[SCT013 (Amazon)](https://www.amazon.com/gp/product/B01FBMFZCO/ref=as_li_tl?ie=UTF8&tag=mjoshd-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B01FBMFZCO&linkId=ac1ae42ea83f4ec36cf73522c3093cf9)
 
-[Relay (Amazon)](https://www.amazon.com/gp/product/B01N9KG234)
+[Relay (Amazon)](https://www.amazon.com/gp/product/B01N9KG234/ref=as_li_tl?ie=UTF8&tag=mjoshd-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B01N9KG234&linkId=3267599dda8b6d6e067977d747b76de4)
 
 <br>
 
